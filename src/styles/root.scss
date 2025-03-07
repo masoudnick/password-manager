@@ -1,4 +1,17 @@
-:root{
-    --body-bg: #202020;
-    --primary-color: #1ed760;
+
+
+
+@media (prefers-color-scheme: dark) {
+    :root{
+        --body-bg: #202124;
+        --body-color: #e3e3e3;
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    :root{
+        --body-bg: #202124;
+        --body-color: #e3e3e3;
+        --ripple-bg: #e3e3e314;
+    }
 }

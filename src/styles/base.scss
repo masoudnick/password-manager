@@ -1,0 +1,26 @@
+body{
+    color: var(--body-color);
+    font-size: 13px;
+}
+
+.btn {
+    font-weight: 500;
+    outline: 0;
+    cursor: pointer;
+    border: 1px solid #047db7;
+    color: #a8c7fa;
+    border-radius: 100px;
+    &:hover{
+        background-color: #e3e3e314;
+    }
+}
+
+input{
+    outline: 0;
+    &:focus{
+        border: 0;
+    }
+}
+
+
+

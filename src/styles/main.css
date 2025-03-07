@@ -1,8 +1,11 @@
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
-@import "fonts.scss";
-@import "root.scss";
-@import "reset.scss";
-@import "icons.scss";
+@import "tailwindcss";
+@import "./fonts.scss";
+@import "./root.scss";
+@import "./base.scss";
+@import "./reset.scss";
+@import "./icons.scss";
 
+
+@theme {
+    --color-regal-blue: #243c5a; 
+}

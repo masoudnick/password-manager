@@ -1,27 +1,25 @@
 @layer base {
-    html{
-        font-weight: normal;
-        color: var(--body-color);
-    }
-    body{
-        background-color: var(--body-bg);
-    }
+  html {
+    font-weight: normal;
+    color: var(--body-color);
   }
-
-*{
-    font-family: IranSans;
+  body {
+    background-color: var(--body-bg);
+  }
+  button{
+    cursor: pointer;
+    
+  }
 }
 
-a{
-    color: #ffffffb3;
-    transition: all .3s ease;
-    &:hover{
-        color: #fff;
-    }
+
+
+* {
+  font-family: IranSans;
 }
 
-.stretched-link{
-&::after{
+.stretched-link {
+  &::after {
     position: absolute;
     top: 0;
     right: 0;
@@ -29,5 +27,5 @@ a{
     left: 0;
     z-index: 1;
     content: "";
-}
+  }
 }
