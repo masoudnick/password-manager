@@ -1,10 +1,15 @@
-import { Search01Icon } from "hugeicons-react";
+import { Search01Icon, CancelCircleIcon } from "hugeicons-react";
+import clsx from "clsx";
+
+import { useState } from "react";
 
 const Header = () => {
+
+    const [value, setValue] = useState<string>("")
   return (
     <header className="mb-5">
       <label
-        className="flex items-center bg-[#282828] rounded-full cursor-text outline-solid outline-transparent outline-offset-2 px-2 py-1.5 hover:bg-[#e3e3e314]"
+        className="flex items-center relative bg-[#282828] rounded-full cursor-text outline-2 outline-transparent outline-offset-1 px-2 py-1.5 hover:bg-[#e3e3e314] focus-within:outline-primary"
         htmlFor="search"
       >
         <Search01Icon
@@ -15,9 +20,16 @@ const Header = () => {
         <input
           className="grow-1 ms-1.5 text-xs"
           id="search"
-          type="search"
+          type="text"
           placeholder="جستجوی رمز عبور ..."
           autoComplete="off"
+          onChange={(e)=> setValue(e.target.value)}
+        />
+        <CancelCircleIcon
+          className={clsx("absolute cursor-pointer left-0 transition duration-150 opacity-0 invisible", value && "opacity-100 visible")}
+          size={"18px"}
+          strokeWidth="2"
+          onClick={()=> setValue("")}
         />
       </label>
     </header>

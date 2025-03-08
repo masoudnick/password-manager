@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Header, Main } from './layouts'
-import './styles/main.css'
+import "./styles/tailwind.css"
+import './styles/index.scss'
 
 function App() {
   const [count, setCount] = useState(0)
