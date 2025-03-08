@@ -1,6 +1,5 @@
 import { Search01Icon, CancelCircleIcon } from "hugeicons-react";
 import clsx from "clsx";
-
 import { useState } from "react";
 
 const Header = () => {

@@ -1,11 +1,15 @@
-import { ArrowLeft01Icon } from "hugeicons-react"; // Replace with the correct path
+import { ArrowLeft01Icon } from "hugeicons-react"; 
+import { useState } from "react";
+import Modal from "../components/Modal";
 
 const Main = () => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
   return (
     <main>
       <section className="flex items-center">
         <h2 className="grow">رمز عبور</h2>
-        <button className="btn px-4 py-1" type="button">
+        <button className="btn px-4 py-1" type="button" onClick={() => setIsOpen(true)}>
           افزودن
         </button>
       </section>
@@ -36,6 +40,14 @@ const Main = () => {
           </li>
         </ul>
       </section>
+      <Modal 
+        isOpen={isOpen} 
+        onClose={() => setIsOpen(false)} 
+        title="Modal Title"
+        footer={<button className="bg-green-500 text-white px-4 py-2 rounded" onClick={() => setIsOpen(false)}>Confirm</button>}
+      >
+        <p>This is the modal content.</p>
+      </Modal>
     </main>
   );
 };
