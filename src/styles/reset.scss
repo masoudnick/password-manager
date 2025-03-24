@@ -1,10 +1,10 @@
 @layer base {
   html {
     font-weight: normal;
-    color: var(--body-color);
+    color: var(--body-text-color);
   }
   body {
-    background-color: var(--body-bg);
+    background-color: var(--body-bg-color);
   }
   button{
     cursor: pointer;

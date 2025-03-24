@@ -1,10 +1,11 @@
 import { Search01Icon, CancelCircleIcon } from "hugeicons-react";
 import clsx from "clsx";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const Header = () => {
-
-    const [value, setValue] = useState<string>("")
+    const [value, setValue] = useState<string>("");
+    const { t} = useTranslation();
   return (
     <header className="mb-5">
       <label
@@ -20,9 +21,10 @@ const Header = () => {
           className="grow-1 ms-1.5 text-xs"
           id="search"
           type="text"
-          placeholder="جستجوی رمز عبور ..."
+          placeholder={t('headerSearchPlaceholder')}
           autoComplete="off"
           onChange={(e)=> setValue(e.target.value)}
+          value={value}
         />
         <CancelCircleIcon
           className={clsx("absolute cursor-pointer left-0 transition duration-150 opacity-0 invisible", value && "opacity-100 visible")}

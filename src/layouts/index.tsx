@@ -1,6 +1,7 @@
 import Header from "./header";
 import Main from "./main";
+import Paswword from "./password";
 
 
 
-export {Header, Main}
+export {Header, Main, Paswword}

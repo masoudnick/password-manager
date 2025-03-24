@@ -1,5 +1,5 @@
 body{
-    color: var(--body-color);
+    color: var(--body-text-color);
     font-size: 13px;
 }
 
@@ -13,12 +13,18 @@ body{
     &:hover{
         background-color: #e3e3e314;
     }
+    &:disabled{
+        pointer-events: none;
+        color: rgba( 227,227,227, .38);
+        background-color: rgba( 227,227,227, .12);
+        border: 0;
+    }
 }
 
 input{
     outline: 0;
     &:focus{
-        border: 0;
+        // border: 0;
     }
 }
 
