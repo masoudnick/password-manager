@@ -1,4 +1,5 @@
 import { ArrowLeft02Icon } from "hugeicons-react";
+import { useNavigate, useLocation  } from "react-router-dom";
 import { Input, Modal } from "../components";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
@@ -11,9 +12,21 @@ type Inputs = {
   password: string;
 };
 
+type Password = {
+  id: number;
+  username: string;
+  password: string;
+  site: string;
+};
+
 const Paswword = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [password, setPassword] = useState<Password>({id: 0, username: "", password: "", site: ""});
+
+  const location = useLocation();
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  
    const {
       register,
       setValue,
@@ -21,23 +34,67 @@ const Paswword = () => {
       formState: { errors },
     } = useForm<Inputs>({mode: "onTouched"});
 
-    const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+    const onSubmit: SubmitHandler<Inputs> = (data) => {
+      fetch("http://localhost/password-manager/api.php?id=" + location.state.id, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("Success:", data);
+          setIsOpen(false);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    }
+
+    const fetchPassword = async () => {
+      const res = await fetch("http://localhost/password-manager/api.php?id=" + location.state.id);
+      const data = await res.json();
+      setPassword(data.data[0])
+    };
+
+
+    const deletePassword = async () =>{
+      fetch("http://localhost/password-manager/api.php?id=" + location.state.id, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          fetchPassword();
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    }
 
     useEffect(() => {
-      setValue("username", "Masoud");
-      setValue("password", "123%");
+      fetchPassword();
+      setValue("username", password.username);
+      setValue("password", password.password);
     }, [isOpen]);
+
+    const back = () => navigate(-1);
+
 
   return (
     <main>
       <section className="flex mb-9 items-center flex-row-reverse justify-start">
         <ArrowLeft02Icon
+        onClick={back}
           className="p-1 cursor-pointer rounded-full ms-1.5 hover:bg-[var(--color-hover)]"
           size={"30px"}
           strokeWidth="2"
         />
         <img
-          className="ms-3 shrink-0"
+          className="ms-3 shrink-0 hidden"
           src="src\assets\images\twitter.png"
           alt=""
           width="20"
@@ -49,13 +106,12 @@ const Paswword = () => {
       <div className="rounded-xl bg-[var(--card-bg-color)] shadow-[var(--card-shadow)]">
         <div className="">
           <div className="grid grid-cols-2 p-5 mt-4 gap-x-4 gap-y-5">
-              <Input label={t("username")} type="text" readOnly={true} value="masoud" />
-              <Input label={t("password")} type="password" readOnly={true} value="123%" />
-              <Input label={t("note")} type="text" readOnly={true} value="123%" />
+              <Input label={t("username")} type="text" readOnly={true} value={password.username} />
+              <Input label={t("password")} type="password" readOnly={true} value={password.password} />
           </div>
           <div className="py-4 px-5 border-t border-[var(--color-hover)]">
             <button className="btn px-4 py-1.5 rounded me-3" onClick={() => setIsOpen(true)}>{t('edit')}</button>
-            <button className="btn px-4 py-1.5 rounded">{t('delete')}</button>
+            <button className="btn px-4 py-1.5 rounded" onClick={deletePassword}>{t('delete')}</button>
           </div>
         </div>
       </div>
