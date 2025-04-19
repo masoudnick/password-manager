@@ -9,7 +9,7 @@ const Header = () => {
   return (
     <header className="mb-5">
       <label
-        className="flex items-center relative bg-[#282828] rounded-full cursor-text outline-2 outline-transparent outline-offset-1 px-2 py-1.5 hover:bg-[#e3e3e314] focus-within:outline-primary"
+        className="flex items-center relative bg-[#282828] rounded-full cursor-text outline-2 outline-transparent outline-offset-1 ps-2 pe-3 py-1.5 hover:bg-[#e3e3e314] focus-within:outline-primary"
         htmlFor="search"
       >
         <Search01Icon
@@ -27,7 +27,7 @@ const Header = () => {
           value={value}
         />
         <CancelCircleIcon
-          className={clsx("absolute cursor-pointer left-0 transition duration-150 opacity-0 invisible", value && "opacity-100 visible")}
+          className={clsx("cursor-pointer transition duration-150 opacity-0 invisible", value && "opacity-100 visible")}
           size={"18px"}
           strokeWidth="2"
           onClick={()=> setValue("")}

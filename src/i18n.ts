@@ -16,10 +16,12 @@ const resources = {
       site: "Site",
       username: "Username",
       note: "Note",
-      requireSite: "URL is required",
+      requireSite: "Don’t forget the website URL!",
       invalidSite: "Invalid URL format",
-      requiredUsername: "Username is required",
-      requiredPassword: "Password is required",
+      requiredUsername: "Pick a username for us!",
+      requiredPassword: "Don’t forget to enter your password!",
+      noPassword: "Your password list is currently empty!",
+      error: "Something went wrong! Please try again."
     },
   },
   fa: {
@@ -36,10 +38,12 @@ const resources = {
       site: "سایت",
       username: "نام کاربری",
       note: "یادداشت",
-      requireSite: "آدرس سایت الزامی است",
+      requireSite: "آدرس سایت یادت نره!",
       invalidSite: "آدرس سایت معتبر نیست",
-      requiredUsername: "نام کاربری الزامی است",
-      requiredPassword: "رمزعبور الزامی است",
+      requiredUsername: "یه نام کاربری برامون بنویس",
+      requiredPassword: "یادت نره گذرواژه‌تو وارد کنی",
+      noPassword: "لیست گذرواژه‌هات فعلاً خالیه!",
+      error: "مشکلی پیش آمده است! لطفاً دوباره تلاش کنید."
 
     },
   },
