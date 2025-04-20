@@ -56,7 +56,7 @@ const Main = () => {
       body: JSON.stringify(data),
     })
       .then((res) => res.json())
-      .then(() => {
+      .then((data) => {
         setLoading((prev) => ({ ...prev, "modal": false }));
         fetchPasswords();
         setIsOpen(false);
@@ -71,9 +71,10 @@ const Main = () => {
     fetch("http://localhost/password-manager/api.php")
       .then((res) => res.json())
       .then((data) => {
+        if (data.status !== 200) showAlert({message: t("error")})
         setLoading((prev) => ({ ...prev, ["password"]: false }));
         setPasswords(data.status === 200 ? data.data : []);
-        if (data.status !== 200) showAlert({message: t("error")})
+        
       })
       .catch(() => {
         showAlert({message: t("error")})
@@ -207,7 +208,7 @@ const Main = () => {
           </div>
         </form>
       </Modal>
-      <Alert message={alert.message} />
+      {alert.message && <Alert message={alert.message} />}
     </main>
   );
 };
