@@ -4,6 +4,8 @@ import { Input, Modal } from "../components";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { getRootDomain } from "../utilities";
+import { Alert } from "../components";
 
 type Inputs = {
   username: string;
@@ -19,6 +21,9 @@ type Password = {
 
 const Paswword = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [alert, showAlert] = useState<AlertProps>({
+    message: "",
+  });
   const [password, setPassword] = useState<Password>({
     id: 0,
     username: "",
@@ -74,8 +79,8 @@ const Paswword = () => {
       .then((data) => {
         fetchPassword();
       })
-      .catch((error) => {
-        console.error("Error:", error);
+      .catch(() => {
+        showAlert({ message: t("error") });
       });
   };
 
@@ -87,12 +92,6 @@ const Paswword = () => {
 
   const back = () => navigate(-1);
 
-  const getRootDomain = (url: string) => {
-    url.replace(/^https?:\/\//, '')
-    url = url.replace(/^www\./, '').split('/')[0]
-    return url;
-  };
-
   return (
     <main>
       <section className="flex mb-9 items-center flex-row-reverse justify-start">
@@ -101,13 +100,6 @@ const Paswword = () => {
           className="p-1 cursor-pointer rounded-full ms-1.5 hover:bg-[var(--color-hover)]"
           size={"30px"}
           strokeWidth="2"
-        />
-        <img
-          className="ms-3 shrink-0 hidden"
-          src="src\assets\images\twitter.png"
-          alt=""
-          width="20"
-          height="20"
         />
         <h2 className="text-lg">{getRootDomain(password.site)}</h2>
       </section>
@@ -182,6 +174,7 @@ const Paswword = () => {
           </div>
         </form>
       </Modal>
+      {alert.message && <Alert message={alert.message} />}
     </main>
   );
 };

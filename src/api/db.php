@@ -9,10 +9,6 @@ $tableName = "passwords";
 
 try {
     $conn = new mysqli($host, $username, $password, $dbname);
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-
     $conn->query("CREATE DATABASE IF NOT EXISTS $dbname");
 
     $query = "CREATE TABLE IF NOT EXISTS $tableName (
@@ -27,7 +23,7 @@ try {
     $conn->query($query);
 }
 catch (Exception $e) {
-    echo "Connection failed: " . $e->getMessage();
+    echo json_encode(["status" => 500, "message" => "Error!"]);
 }
 
 ?>

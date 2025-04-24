@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Modal, Input, Loading, Alert, AlertProps } from "../components";
 import { Link } from "react-router-dom";
 import { clsx } from "clsx";
+import { getRootDomain } from "../utilities";
 
 type Inputs = {
   username: string;
@@ -17,12 +18,12 @@ type Password = {
   username: string;
   password: string;
   site: string;
+  icon: string;
 };
 
 type LoadingProps = {
   [key: string]: boolean;
 };
-
 
 const Main = () => {
   const { t } = useTranslation();
@@ -32,9 +33,10 @@ const Main = () => {
     password: false,
   });
   const [alert, showAlert] = useState<AlertProps>({
-    message: ""
+    message: "",
   });
   const [passwords, setPasswords] = useState<Password[]>([]);
+
   const {
     register,
     handleSubmit,
@@ -56,13 +58,13 @@ const Main = () => {
       body: JSON.stringify(data),
     })
       .then((res) => res.json())
-      .then((data) => {
-        setLoading((prev) => ({ ...prev, "modal": false }));
+      .then(() => {
+        setLoading((prev) => ({ ...prev, modal: false }));
         fetchPasswords();
         setIsOpen(false);
       })
       .catch(() => {
-        showAlert({message: t("error")})
+        showAlert({ message: t("error") });
       });
   };
 
@@ -70,16 +72,31 @@ const Main = () => {
     setLoading((prev) => ({ ...prev, ["password"]: true }));
     fetch("http://localhost/password-manager/api.php")
       .then((res) => res.json())
-      .then((data) => {
-        if (data.status !== 200) showAlert({message: t("error")})
+      .then(async (res) => {
+        if (res.status !== 200) showAlert({ message: t("error") });
+
+        const passwords = await Promise.all(
+          res.data.map(async (item: Password) => {
+            try {
+              const rootDomain = getRootDomain(item.site);              
+              const response = await fetch(
+                `https://favicone.com/${rootDomain}?s=32&json`
+              );
+              const favicon = await response.json();
+              return { ...item, icon: response.ok ? favicon.icon : "" };
+            } catch {
+              return { ...item, icon: "" };
+            }
+          })
+        );
+        setPasswords(passwords);
         setLoading((prev) => ({ ...prev, ["password"]: false }));
-        setPasswords(data.status === 200 ? data.data : []);
-        
       })
       .catch(() => {
-        showAlert({message: t("error")})
+        showAlert({ message: t("error") });
       });
   };
+
   useEffect(() => {
     fetchPasswords();
   }, []);
@@ -97,48 +114,49 @@ const Main = () => {
         </button>
       </section>
       {!loading.password ? (
-        passwords.length ?
-        (<section className="rounded-lg overflow-hidden bg-[#292a2d] mt-8">
-          <ul>
-            {passwords.map((password) => (
-              <li
-                key={password.id}
-                className={clsx("relative hover:bg-[var(--color-hover)] before:absolute before:bottom-0 before:left-0 before:right-0 before:w-5/6 before:h-px before:bg-[var(--color-hover)] before:mx-auto", passwords.length > 1 ? "before:content-['']" : "before:hidden")}
-              >
-                <Link
-                  to={`/${password.site}`}
-                  className="flex items-center py-3 px-3.5 w-full hover:bg-[var(--color-hover)]"
-                  state={{ id: password.id }}
+        passwords.length ? (
+          <section className="rounded-lg overflow-hidden bg-[#292a2d] mt-8">
+            <ul>
+              {passwords.map((password) => (
+                <li
+                  key={password.id}
+                  className={clsx(
+                    "relative hover:bg-[var(--color-hover)] before:absolute before:bottom-0 before:left-0 before:right-0 before:w-5/6 before:h-px before:bg-[var(--color-hover)] before:mx-auto",
+                    passwords.length > 1
+                      ? "before:content-['']"
+                      : "before:hidden"
+                  )}
                 >
-                  <img
-                    className="me-5 shrink-0"
-                    src="src\assets\images\twitter.png"
-                    alt="twitter"
-                    width="16"
-                    height="16"
-                  />
-                  <div className="flex grow">
-                    <p className="grow text-start">
-                      <span>{password.site}</span>
-                    </p>
-                    <ArrowLeft01Icon
-                      className="cursor-pointer rounded-full hover:bg-[var(--color-hover)]"
-                      size={"20px"}
-                      strokeWidth="1"
+                  <Link
+                    to={`/${password.site}`}
+                    className="flex items-center py-3 px-3.5 w-full hover:bg-[var(--color-hover)]"
+                    state={{ id: password.id }}
+                  >
+                    <img
+                      className="me-3 shrink-0"
+                      src={password.icon}
+                      alt="twitter"
+                      width="16"
+                      height="16"
                     />
-                  </div>
-                </Link>
-              </li>
-            ))
-          }
-          </ul>
-        </section>)
-        :
-          (
-            <div className="text-center mt-7">
-              {t("noPassword")}
-            </div>
-          )
+                    <div className="flex grow">
+                      <p className="grow text-start">
+                        <span>{password.site}</span>
+                      </p>
+                      <ArrowLeft01Icon
+                        className="cursor-pointer rounded-full hover:bg-[var(--color-hover)]"
+                        size={"20px"}
+                        strokeWidth="1"
+                      />
+                    </div>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : (
+          <div className="text-center mt-7">{t("noPassword")}</div>
+        )
       ) : (
         <div className="flex justify-center mt-5">
           <Loading className="mr-3 text-white size-7" />
